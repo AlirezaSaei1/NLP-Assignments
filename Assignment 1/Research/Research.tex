@@ -10,7 +10,7 @@
 
 \pretitle{%
   \begin{center}
-  \includegraphics[width = 150px]{university-of-isfahan-logo.png}\\[\bigskipamount]
+  \includegraphics[width = 150px]{Images/university-of-isfahan-logo.png}\\[\bigskipamount]
   \vspace{3cm}
 }
 \posttitle{\end{center}}
@@ -63,17 +63,17 @@ Sequential models encode an N-token-article $X = (x_1, ..., x_n)$ as a d-dimensi
     \item \textbf{Learning the Latent Hierarchical Structure}: HierGNN learns the hierarchical document structure without direct supervision, using a sparse variant of the matrix-tree theorem. It represents the document as a complete weighted graph, where each node represents a sentence and a root value of that sentence representing the hierarchical role of the sentence, and edge weights indicate directional dependencies between sentences.
     \item \textbf{Reasoning by Hierarchy-aware Message Passing}: HierGNN utilizes a novel message-passing mechanism over the learned hierarchical graph to propagate information between sentences, enabling inter-sentence reasoning. For the i-th sentence node, the edge marginal controls the aggregation from its
         K information nodes; and root probability controls the combined neighboring information in i-th node as $u^{(l)}$ in the l-th reasoning layer: $$u_i^{(l)} = (1 - p_i^r) . F_r(s_i^{(l)}) + (p_i^r) . \sum_{k=1}^{K} A_{ik}F_n(s_k^{(l)})$$ Where $F_r$ and $F_n$ are parametric functions. A gated mechanism is used for filtering out unnecessary information which involves calculating sigmoid and layer normalization (LN) steps.
-    \item \textbf{Reasoning Fusion Layer}: This model stack L HierGNNs together where fusion layer is used for aggregating the output from each reasoning hop. There are 2 approaches for layers use: 
+    \item \textbf{Reasoning Fusion Layer}: This model stack L HierGNNs together where fusion layer is used for aggregating the output from each reasoning hop. There are 2 approaches for layers use:
         \begin{enumerate}
           \item Layer-Shared Reasoning (LSR): Uses a shared reasoning graph first, followed by L message passing layers for reasoning
           \item Layer-Independent Reasoning (LIR): Uses layer-wise latent hierarchical graphs independently, where each message passing layer uses its own graph
         \end{enumerate}
     \item \textbf{Graph-selection Attention Mechanism}: HierGNN incorporates a graph-selection attention mechanism to inform the decoder with learned hierarchical information during decoding, improving the relevance and coherence of generated summaries.
-\end{enumerate} 
+\end{enumerate}
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=1\textwidth]{Model.png}
+  \includegraphics[width=1\textwidth]{Images/Model.png}
   \caption{Architecture for the sequence-to-sequence model with HierGNN reasoning encoder.}
   \label{fig:model_diagram}
 \end{figure}

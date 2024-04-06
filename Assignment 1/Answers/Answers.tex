@@ -10,7 +10,7 @@
 
 \pretitle{%
   \begin{center}
-  \includegraphics[width = 150px]{university-of-isfahan-logo.png}\\[\bigskipamount]
+  \includegraphics[width = 150px]{Images/university-of-isfahan-logo.png}\\[\bigskipamount]
   \vspace{3cm}
 }
 \posttitle{\end{center}}
@@ -23,13 +23,34 @@
 \section{Question 1}
 The 4 stages of natural languages are:
 \begin{itemize}
-    \item \textbf{Lexical Ambiguity}: The ambiguity of a single word is called Lexical Ambiguity. It arises from the presence of words with multiple meanings or interpretations.
+    \item \textbf{Acoustic Ambiguity}: This type of ambiguity arises when words or phrases sound similar but have different meanings when put together. It occurs due to homophones or words with similar phonetic properties. Example:
+        
+        \begin{figure}[h]
+          \centering
+          \includegraphics[width=1\textwidth]{Images/Acoustic.png}
+          \label{fig:model_diagram}
+        \end{figure}
 
-    \item \textbf{Syntactic Ambiguity}: This kind of ambiguity occurs when a sentence is parsed in different ways due to its syntactic structure.
+    \item \textbf{Syntactic Ambiguity}: Syntactic ambiguity occurs when the structure or arrangement of words in a sentence allows for multiple interpretations. This ambiguity arises from the grammar or syntax of the language. Different parsing or grouping of words within the sentence can lead to distinct meanings. Example:
+        \begin{figure}[h]
+          \centering
+          \includegraphics[width=1\textwidth]{Images/Syntactic.png}
+          \label{fig:model_diagram}
+        \end{figure}
 
-    \item \textbf{Semantic Ambiguity}: It arises when a sentence has multiple interpretations based on the meaning of the words used.
+    \item \textbf{Semantic Ambiguity}: Semantic ambiguity involves words or phrases that have multiple meanings or interpretations based on context. This ambiguity arises from the ambiguity of individual words or phrases themselves, rather than the structure of the sentence. The meaning of the word may change depending on the context in which it is used. Example:
+        \begin{figure}[h]
+          \centering
+          \includegraphics[width=1\textwidth]{Images/Semantic.png}
+          \label{fig:model_diagram}
+        \end{figure}
 
-    \item \textbf{Pragmatic Ambiguity}: Pragmatic ambiguity happens when the context of a phrase gives it multiple interpretations (the statement is not specific).
+    \item \textbf{Discourse Ambiguity}: Discourse ambiguity refers to ambiguity that arises at the level of larger units of language, such as conversations, paragraphs, or entire texts. This type of ambiguity often arises when pronouns or other referring expressions lack clear antecedents or when there are ambiguities in the overall context of the communication. Example:
+        \begin{figure}[h]
+          \centering
+          \includegraphics[width=1\textwidth]{Images/Discourse.png}
+          \label{fig:model_diagram}
+        \end{figure}
 
 \end{itemize}
 \pagebreak
@@ -39,11 +60,12 @@ The 4 stages of natural languages are:
 This algorithm takes a sequence of characters (string) as input. Then, using a list of all valid words available (dictionary), the algorithm iterates over the input text and tries to match the longest possible sequence of characters with words or tokens from the dictionary. This greedy algorithm returns a list of words or tokens segmented from the input text.\\\\
 \textbf{Example}: This algorithm acts as following:
 
-Input: \textit{"thisisatestsentence"}
-
-Dictionary: ["this", "is", "a", "test", "sentence", "the", "red", "nlp"]
-
-Output: ["this", "is", "a", "test", "sentence"]\\\\
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=1\textwidth]{Images/MaxMatch.png}
+  \caption{Maximum Matching Example}
+  \label{fig:model_diagram}
+\end{figure}
 
 \textbf{Applications}: Applications of the Maximum Matching Algorithm:
 \begin{itemize}
@@ -56,8 +78,13 @@ Output: ["this", "is", "a", "test", "sentence"]\\\\
 
 \section{Question 3}
 \textbf{Lemmatization:} Lemmatization is the process of reducing words to their base or dictionary form, known as the lemma. It involves identifying the root form of a word considering its meaning. \\\\
-
-
 \textbf{Stemming:} Stemming is the process of removing suffixes or prefixes from words to extract their root form, known as the stem. It's a heuristic process that chops off ends of words based on common patterns. But this method is not always able to produce valid dictionary words.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=1\textwidth]{Images/Stem_Lemma.png}
+  \caption{Stemmed and Lemmatized}
+  \label{fig:model_diagram}
+\end{figure}
 
 \end{document}
