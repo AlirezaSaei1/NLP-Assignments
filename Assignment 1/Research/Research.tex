@@ -27,10 +27,9 @@ There are different approaches to text summarization:
   \item \textbf{Extractive methods} that identify and extract important sentences or phrases from the text.
   \item \textbf{Abstractive methods} that generate new text based on the content of the original text.
 \end{itemize}
-\pagebreak
 
 \section{Sentiment Analysis}
-Sentiment analysis is a natural language processing (NLP) technique used to determine whether data is positive, negative or neutral. Sentiment analysis is often performed on textual data to help businesses monitor brand and product sentiment in customer feedback, and understand customer needs. Statistical machine learning models like following are used in sentiment analysis tasks:
+Sentiment analysis is a natural language processing (NLP) technique used to determine whether data is positive, negative, or neutral. Sentiment analysis is often performed on textual data to help businesses monitor brand and product sentiment in customer feedback, and understand customer needs. Statistical machine learning models like the following are used in sentiment analysis tasks:
 \begin{itemize}
   \item Naive Bayes Classifier
   \item Support Vector Machine (SVM)
@@ -38,8 +37,6 @@ Sentiment analysis is a natural language processing (NLP) technique used to dete
   \item Random Forest
   \item Gradient Boosting Machines (GBM)
 \end{itemize}
-
-\pagebreak
 
 \section{Machine Translation}
 Machine translation (MT) in natural language processing (NLP) refers to the automated process of translating text or speech from one language to another. The primary goal of machine translation is to enable communication between people who speak different languages by automatically converting text or speech from a source language into an equivalent text or speech in a target language. There are 4 types of machine translation:
@@ -55,7 +52,7 @@ Machine translation (MT) in natural language processing (NLP) refers to the auto
 
 \subsection{Problem Statement and Idea}
 This article talks about the issue of sequential summarization methods failing to utilize the underlying structure and dependencies within the input text, leading to suboptimal summarization quality. The proposed solution aims to overcome this limitation by introducing a novel Hierarchical Graph Neural Network (HierGNN) model for abstractive summarization. The key idea is to extract the hierarchical structure of the document and inter-sentence dependencies to improve the coherence and informativeness of generated abstract summaries. This graph is learns the hierarchical structure of text via a sparse variant of the matrix-tree computation. It then formulates sentence-level
-reasoning as a graph propagation problem. The proposed method is incorporated into BART and Pointer-Generator Networks (PGN) resulting an improvement on performance because HierGNN encourages the summarizers to focus on sentence fusion more than sentence compression.
+reasoning as a graph propagation problem. The proposed method is incorporated into BART and Pointer-Generator Networks (PGN) resulting in an improvement in performance because HierGNN encourages the summarizers to focus on sentence fusion more than sentence compression.
 
 \subsection{Proposed Model}
 Sequential models encode an N-token-article $X = (x_1, ..., x_n)$ as a d-dimensional latent vector using an encoding function then it is decoded into target summary Y. The Hierarchy-aware Graph Neural Encoder model learns the documents structure and it consists of several key components:
@@ -63,7 +60,7 @@ Sequential models encode an N-token-article $X = (x_1, ..., x_n)$ as a d-dimensi
     \item \textbf{Learning the Latent Hierarchical Structure}: HierGNN learns the hierarchical document structure without direct supervision, using a sparse variant of the matrix-tree theorem. It represents the document as a complete weighted graph, where each node represents a sentence and a root value of that sentence representing the hierarchical role of the sentence, and edge weights indicate directional dependencies between sentences.
     \item \textbf{Reasoning by Hierarchy-aware Message Passing}: HierGNN utilizes a novel message-passing mechanism over the learned hierarchical graph to propagate information between sentences, enabling inter-sentence reasoning. For the i-th sentence node, the edge marginal controls the aggregation from its
         K information nodes; and root probability controls the combined neighboring information in i-th node as $u^{(l)}$ in the l-th reasoning layer: $$u_i^{(l)} = (1 - p_i^r) . F_r(s_i^{(l)}) + (p_i^r) . \sum_{k=1}^{K} A_{ik}F_n(s_k^{(l)})$$ Where $F_r$ and $F_n$ are parametric functions. A gated mechanism is used for filtering out unnecessary information which involves calculating sigmoid and layer normalization (LN) steps.
-    \item \textbf{Reasoning Fusion Layer}: This model stack L HierGNNs together where fusion layer is used for aggregating the output from each reasoning hop. There are 2 approaches for layers use:
+    \item \textbf{Reasoning Fusion Layer}: This model stacks L HierGNNs together where the fusion layer is used for aggregating the output from each reasoning hop. There are 2 approaches for layer use:
         \begin{enumerate}
           \item Layer-Shared Reasoning (LSR): Uses a shared reasoning graph first, followed by L message passing layers for reasoning
           \item Layer-Independent Reasoning (LIR): Uses layer-wise latent hierarchical graphs independently, where each message passing layer uses its own graph
@@ -87,6 +84,5 @@ The experimental results demonstrate the effectiveness of the proposed HierGNN m
     \item \textbf{Human Evaluations}: Human referees (from Amazon Mechanical Turk) assess HierGNN-BART as producing the overall best summaries in terms of \textbf{relevance}, \textbf{informativeness}, and \textbf{redundancy}, compared to other abstractive baselines such as BERTSUMABS, T5-Large, and BART.
     \item \textbf{Ablations}: Ablation studies confirm the positive contribution of HierGNN components, including the reasoning module, graph-selection attention, sparse matrix-tree computation, and graph fusion layer, to the overall performance of the model in summarization tasks.
 \end{itemize}
-
 
 \end{document}
