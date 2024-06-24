@@ -22,10 +22,42 @@
 
 
 \section*{Question No. 1}
-\textbf{Explain the architecture and pre-training process of wav2vec 2.0.}\\\\
-Paper 3 (wav2vec 2.0: A Framework for Self-Supervised Learning of Speech Representations)\\\\
-Architecture: Wav2vec 2.0 consists of a convolutional feature encoder followed by a transformer. The feature encoder processes raw audio into latent speech representations, while the transformer context network captures long-range dependencies.
-Pre-Training Process: The model is pre-trained using a contrastive task where it learns to distinguish true future audio samples from distractors. The training involves masking parts of the latent speech representations and predicting them based on the context provided by the unmasked parts.
+\textbf{Explain the architecture and pre-training process of wav2vec 2.0.}
+
+
+\subsection*{Architecture}
+
+\subsubsection{Feature Encoder}
+
+The first stage of Wav2Vec 2.0 is the feature encoder, which transforms raw audio waveforms into latent speech representations. This is achieved using a stack of convolutional neural network (CNN) layers. These layers capture local dependencies within the input waveform and produce a sequence of feature vectors.
+
+
+\subsubsection{Quantization Module}
+
+The quantization module discretizes the continuous feature vectors into a finite set of discrete codebook entries. This process creates a set of discrete latent representations, often referred to as quantized representations.
+
+During training, the model learns to predict these discrete latent representations. This step is for reducing the complexity of the data and providing a more manageable form for subsequent processing.
+
+
+\subsubsection{Context Network}
+
+This network consists of Transformer layers, which are well-suited for capturing long-range dependencies and contextual information across the sequence of quantized representations.
+
+The context network refines the representations by considering the relationships and dependencies between different parts of the input sequence. This step is for enhancing the model's ability to understand and predict sequences of speech features.
+
+
+\subsubsection{Contrastive Task}
+
+The model learns to distinguish between the true quantized representation of a masked part of the input and a set of distractor representations.
+
+By predicting the correct quantized representation despite the masking, the model effectively learns to encode useful information about the audio signal into its latent representations.
+
+\pagebreak
+
+
+\subsection*{Pre-Training Process}
+
+
 
 \pagebreak
 
