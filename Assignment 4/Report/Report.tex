@@ -57,15 +57,77 @@ By predicting the correct quantized representation despite the masking, the mode
 
 \subsection*{Pre-Training Process}
 
+The pre-training of Wav2Vec 2.0 involves learning to predict masked parts of the input audio data based on the surrounding context. The model learns to identify the correct quantized latent audio representation from a set of distractors for each masked time step, and is then fine-tuned on labeled data for specific tasks.
 
+\subsubsection{Masking}
+
+To pre-train the model, a certain proportion of time steps in the latent feature encoder space are masked. A proportion of the feature encoder outputs, or time steps, are masked before they are fed into the context network. These masked outputs are replaced with a trained feature vector shared across all masked time steps. Masking is done by randomly sampling a certain proportion \( p \) of all time steps without replacement to act as starting indices. From each sampled index, \( M \) consecutive time steps are masked. The spans of these masked time steps may overlap.
+
+\subsubsection{Objective}
+The training objective during pre-training consists of two parts: a contrastive loss and a codebook diversity loss.
+
+\begin{itemize}
+  \item \textbf{Contrastive Loss} ($L_m$):
+    \begin{itemize}
+      \item The model learns speech representations by solving a contrastive task, which requires identifying the true quantized latent speech representation for a masked time step from a set of distractors.
+      \item Given the context network output \( c_t \) centered over a masked time step \( t \), the model must identify the true quantized latent speech representation \( q_t \) among \( K + 1 \) candidates (including \( K \) distractors). These distractors are uniformly sampled from other masked time steps within the same utterance.
+      \item The contrastive loss is defined as:
+      \[
+      L_m = -\log \frac{\exp(\text{sim}(c_t, q_t))}{\sum_{\tilde{q} \in Q_t} \exp(\text{sim}(c_t, \tilde{q}))}
+      \]
+      where \(\text{sim}(a, b) = \frac{a^T b}{\|a\| \|b\|}\) is the cosine similarity between context representations and quantized latent speech representations.
+    \end{itemize}
+    
+  \pagebreak
+  
+  \item \textbf{Diversity Loss} ($L_d$):
+    \begin{itemize}
+      \item The contrastive task relies on the codebook to represent both positive and negative examples. The diversity loss encourages the model to use the codebook entries equally often.
+      \item This is done by maximizing the entropy of the averaged softmax distribution over the codebook entries for each codebook across a batch of utterances. The entropy \( H \) is calculated as:
+      \[
+      L_d = \frac{1}{GV} \sum_{g=1}^G -H(\bar{p}_g) = \frac{1}{GV} \sum_{g=1}^G \sum_{v=1}^V \bar{p}_{g,v} \log \bar{p}_{g,v}
+      \]
+      where \( G \) is the number of codebooks and \( V \) is the number of entries in each codebook.
+    \end{itemize}
+\end{itemize}
+
+The overall pre-training loss is a combination of the contrastive loss and the diversity loss:
+\[
+L = L_m + \alpha L_d
+\]
+where \( \alpha \) is a tuned hyperparameter.
+
+\subsubsection{Fine-tuning}
+After pre-training, the model is fine-tuned for specific tasks such as speech recognition:
+
+\begin{itemize}
+  \item A randomly initialized linear projection is added on top of the context network, mapping its outputs to \( C \) classes representing the vocabulary of the task.
+  \item The models are optimized by minimizing the Connectionist Temporal Classification (CTC) loss.
+  \item A modified version of SpecAugment is applied during training, which involves masking time-steps and channels to delay overfitting and improve the final error rates, especially on datasets with few labeled examples.
+\end{itemize}
 
 \pagebreak
 
 \section*{Question No. 2}
 \textbf{What is the difference between wav2vec 2.0 and wav2vec XLSR-53?}\\\\
-Paper 4 (Unsupervised Cross-lingual Representation Learning for Speech Recognition)\\\\
-\textbf{wav2vec 2.0}: Focuses on learning representations from raw audio data in a self-supervised manner primarily for a single language.
-\textbf{wav2vec XLSR-53}: Extends wav2vec 2.0 by using multilingual data, enabling cross-lingual transfer. It is trained on speech from 53 languages, allowing it to generalize better across different languages and low-resource settings.
+Wav2Vec 2.0 and Wav2Vec XLSR-53 are both speech representation learning models developed by Facebook AI, but the differences are:
+
+\subsection*{Wav2Vec 2.0}
+\begin{itemize}
+  \item \textbf{Architecture}: Wav2Vec 2.0 consists of three main components: a feature encoder, a quantization module, and a context network.
+  \item \textbf{Pre-Training}: The model is pre-trained on large amounts of unlabeled audio data using self-supervised learning. The pre-training involves masking portions of the input audio and learning to predict these masked portions using a contrastive loss.
+  \item \textbf{Fine-Tuning}: After pre-training, the model is fine-tuned on labeled data for specific tasks such as automatic speech recognition (ASR).
+  \item \textbf{Performance}: Wav2Vec 2.0 has achieved state-of-the-art results on various speech recognition benchmarks, demonstrating its effectiveness in learning high-quality speech representations from raw audio.
+\end{itemize}
+
+\subsection*{Wav2Vec XLSR-53}
+\begin{itemize}
+  \item \textbf{Architecture}: Wav2Vec XLSR-53 is built on the same architecture as Wav2Vec 2.0 but is designed for cross-lingual speech representation learning.
+  \item \textbf{Pre-Training}: XLSR-53 is pre-trained on audio data from 53 different languages, making it capable of learning representations that are useful across multiple languages. This cross-lingual training allows the model to capture universal speech patterns and improve performance on low-resource languages.
+  \item \textbf{Fine-Tuning}: Similar to Wav2Vec 2.0, XLSR-53 can be fine-tuned on labeled data for specific ASR tasks, but its pre-training on multiple languages makes it particularly powerful for multilingual applications.
+  \item \textbf{Performance}: XLSR-53 has demonstrated strong performance in cross-lingual ASR tasks, particularly in low-resource languages where labeled data is scarce. Its ability to transfer knowledge across languages is a key advantage.
+\end{itemize}
+
 
 \pagebreak
 
