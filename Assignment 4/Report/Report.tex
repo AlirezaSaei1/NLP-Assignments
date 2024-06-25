@@ -77,9 +77,9 @@ The training objective during pre-training consists of two parts: a contrastive 
       \]
       where \(\text{sim}(a, b) = \frac{a^T b}{\|a\| \|b\|}\) is the cosine similarity between context representations and quantized latent speech representations.
     \end{itemize}
-    
+
   \pagebreak
-  
+
   \item \textbf{Diversity Loss} ($L_d$):
     \begin{itemize}
       \item The contrastive task relies on the codebook to represent both positive and negative examples. The diversity loss encourages the model to use the codebook entries equally often.
@@ -132,15 +132,34 @@ Wav2Vec 2.0 and Wav2Vec XLSR-53 are both speech representation learning models d
 \pagebreak
 
 \section*{Question No. 3}
-\textbf{How is decoding performed in the wav2vec 2.0 model? Explain the method used.}\\\\
-Paper 3\\\\
-Decoding Method: Decoding in wav2vec 2.0 typically involves using a Connectionist Temporal Classification (CTC) decoder. During inference, the model outputs probability distributions over characters for each time step, and the CTC decoder converts these into the most likely sequence of characters, handling the alignment between input speech frames and output text.
+\textbf{How is decoding performed in the Wav2Vec 2.0 model? Explain the method used.}\\\\
+Decoding in Wav2Vec 2.0 uses a Connectionist Temporal Classification (CTC) decoder. During inference, the model outputs probability distributions over characters for each time step, and the CTC decoder converts these into the most likely sequence of characters, handling the alignment between input speech frames and output text.
+
+\begin{itemize}
+
+  \item \textbf{CTC Loss Function}: During training, the model is fine-tuned using the Connectionist Temporal Classification (CTC) loss function. CTC aligns the input speech frames with the target transcription without requiring explicit frame-level annotations. The CTC loss allows the model to output a probability distribution over possible character sequences for each frame in the input sequence.
+  \[
+  \mathcal{L}_{\text{CTC}} = -\log p(y | x)
+  \]
+  where \( y \) is the target transcription and \( x \) is the input speech frames.
+
+  \item \textbf{Beam Search Decoding}: During inference, beam search decoding is used to find the most likely transcription from the CTC output probabilities. Beam search is a heuristic search algorithm that explores multiple possible sequences simultaneously and selects the one with the highest probability.
+  \begin{itemize}
+    \item \textbf{Beam Width}: The beam width is a parameter that controls the number of sequences explored at each time step. A larger beam width can improve accuracy but increases computational complexity.
+    \item \textbf{Scoring}: The beam search algorithm scores each sequence based on the CTC probabilities and selects the top sequences with the highest scores.
+  \end{itemize}
+
+  \item \textbf{OPTIONAL: Language Model Integration}: To further improve the accuracy of the transcription, a language model (LM) can be integrated during the decoding process. The LM helps to bias the decoding towards more linguistically probable sequences.
+
+\end{itemize}
+
+The decoding process in Wav2Vec 2.0, using CTC and beam search decoding (with optional language model integration), enables the model to effectively convert the learned speech representations into accurate text transcriptions. This combination of techniques ensures that the model can handle the variability and complexity of natural speech while producing high-quality transcriptions.
+
 
 \pagebreak
 
 \section*{Question No. 4}
-\textbf{What method or technique is used to handle the alignment between input speech frames and output text in wav2vec 2.0?}\\\\
-Paper 3\\\\
+\textbf{What method or technique do you recommend to get better results?}\\\\
 Alignment Technique: The alignment between input speech frames and output text is handled by the CTC loss function. The CTC loss allows the model to learn the alignment implicitly by considering all possible alignments during training and summing their probabilities, enabling end-to-end training without the need for pre-segmented data.
 
 \end{document}
