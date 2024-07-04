@@ -2,6 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{graphicx}
+\usepackage{hyperref}
 \usepackage{titling}
 
 \title{\textbf{\Huge NLP Assignment 4: Research}}
@@ -20,12 +21,16 @@
 
 \pagebreak
 
+\tableofcontents
 
-\section*{Question No. 1}
+\pagebreak
+
+
+\section{Question No. 1}
 \textbf{Explain the architecture and pre-training process of wav2vec 2.0.}
 
 
-\subsection*{Architecture}
+\subsection{Architecture}
 
 \subsubsection{Feature Encoder}
 
@@ -55,7 +60,7 @@ By predicting the correct quantized representation despite the masking, the mode
 \pagebreak
 
 
-\subsection*{Pre-Training Process}
+\subsection{Pre-Training Process}
 
 The pre-training of Wav2Vec 2.0 involves learning to predict masked parts of the input audio data based on the surrounding context. The model learns to identify the correct quantized latent audio representation from a set of distractors for each masked time step, and is then fine-tuned on labeled data for specific tasks.
 
@@ -108,11 +113,11 @@ After pre-training, the model is fine-tuned for specific tasks such as speech re
 
 \pagebreak
 
-\section*{Question No. 2}
+\section{Question No. 2}
 \textbf{What is the difference between wav2vec 2.0 and wav2vec XLSR-53?}\\\\
 Wav2Vec 2.0 and Wav2Vec XLSR-53 are both speech representation learning models developed by Facebook AI, but the differences are:
 
-\subsection*{Wav2Vec 2.0}
+\subsection{Wav2Vec 2.0}
 \begin{itemize}
   \item \textbf{Architecture}: Wav2Vec 2.0 consists of three main components: a feature encoder, a quantization module, and a context network.
   \item \textbf{Pre-Training}: The model is pre-trained on large amounts of unlabeled audio data using self-supervised learning. The pre-training involves masking portions of the input audio and learning to predict these masked portions using a contrastive loss.
@@ -120,7 +125,7 @@ Wav2Vec 2.0 and Wav2Vec XLSR-53 are both speech representation learning models d
   \item \textbf{Performance}: Wav2Vec 2.0 has achieved state-of-the-art results on various speech recognition benchmarks, demonstrating its effectiveness in learning high-quality speech representations from raw audio.
 \end{itemize}
 
-\subsection*{Wav2Vec XLSR-53}
+\subsection{Wav2Vec XLSR-53}
 \begin{itemize}
   \item \textbf{Architecture}: Wav2Vec XLSR-53 is built on the same architecture as Wav2Vec 2.0 but is designed for cross-lingual speech representation learning.
   \item \textbf{Pre-Training}: XLSR-53 is pre-trained on audio data from 53 different languages, making it capable of learning representations that are useful across multiple languages. This cross-lingual training allows the model to capture universal speech patterns and improve performance on low-resource languages.
@@ -131,7 +136,7 @@ Wav2Vec 2.0 and Wav2Vec XLSR-53 are both speech representation learning models d
 
 \pagebreak
 
-\section*{Question No. 3}
+\section{Question No. 3}
 \textbf{How is decoding performed in the Wav2Vec 2.0 model? Explain the method used.}\\\\
 Decoding in Wav2Vec 2.0 uses a Connectionist Temporal Classification (CTC) decoder. During inference, the model outputs probability distributions over characters for each time step, and the CTC decoder converts these into the most likely sequence of characters, handling the alignment between input speech frames and output text.
 
@@ -149,8 +154,6 @@ Decoding in Wav2Vec 2.0 uses a Connectionist Temporal Classification (CTC) decod
     \item \textbf{Scoring}: The beam search algorithm scores each sequence based on the CTC probabilities and selects the top sequences with the highest scores.
   \end{itemize}
 
-  \item \textbf{OPTIONAL: Language Model Integration}: To further improve the accuracy of the transcription, a language model (LM) can be integrated during the decoding process. The LM helps to bias the decoding towards more linguistically probable sequences.
-
 \end{itemize}
 
 The decoding process in Wav2Vec 2.0, using CTC and beam search decoding (with optional language model integration), enables the model to effectively convert the learned speech representations into accurate text transcriptions. This combination of techniques ensures that the model can handle the variability and complexity of natural speech while producing high-quality transcriptions.
@@ -158,13 +161,69 @@ The decoding process in Wav2Vec 2.0, using CTC and beam search decoding (with op
 
 \pagebreak
 
-\section*{Question No. 4}
+\section{Question No. 4}
 \textbf{What method or technique do you recommend to get better results?}\\\\
-Alignment Technique: The alignment between input speech frames and output text is handled by the CTC loss function. The CTC loss allows the model to learn the alignment implicitly by considering all possible alignments during training and summing their probabilities, enabling end-to-end training without the need for pre-segmented data.
+\textbf{Alignment Technique}: The alignment between input speech frames and output text is handled by the CTC loss function. The CTC loss allows the model to learn the alignment implicitly by considering all possible alignments during training and summing their probabilities, enabling end-to-end training without the need for pre-segmented data.\\\\
+\textbf{Language Model Integration}: To further improve the accuracy of the transcription, a language model (LM) can be integrated during the decoding process. The LM helps to bias the decoding towards more linguistically probable sequences.\\\\
+\textbf{Hyper-parameter Tuning and Scheduling}: Adjusting the learning rate, batch size, and other hyper-parameters can significantly impact the performance of the model. Using a learning rate scheduler can also help in finding the optimal learning rate during training.\\\\
+\textbf{Data Augmentation}: Applying data augmentation techniques such as adding noise, changing pitch, or speed of the audio can make the model more robust to variations in the input data.\\\\
+\textbf{More Training Data}: Increasing the amount and diversity of the training data can lead to better generalization and improved performance of the model.\\\\
+\textbf{Fine-tuning with Domain-specific Data}: Fine-tuning the model on domain-specific data can help in adapting the model to the particular characteristics and vocabulary of the target domain, resulting in better performance.
+
 
 \pagebreak
 
-\section*{Code Report}
+\section{Code Report}
+
+\subsection{Process}
+
+First, the dataset is downloaded using the HuggingFace API Token to access the Mozilla Common Voice Dataset. The dataset is then cleaned by removing unnecessary columns and filtering audio durations (\textbf{Train}: 4-6 seconds, \textbf{Test}: under 15 seconds). Next, text preprocessing involves ignoring specified characters and mapping all characters to a standard set (length: 35). Text normalization follows, and a vocabulary dictionary is created for use in the \texttt{Wav2Vec2CTCTokenizer}. Additionally, 5 special characters (\textless s\textgreater, \textless/s\textgreater, \textless pad\textgreater, \textless unk\textgreater, and | as delimiter) are added to the dictionary. Audio is resampled from 48000 kHz to 16000 kHz to match the Wav2vec2 model requirements.\\\\
+The \texttt{Wav2Vec2CTCTokenizer}, \texttt{Wav2Vec2FeatureExtractor}, and combined processor are defined. The \texttt{prepare\_dataset} function extracts input features (audio signals) using the processor, and generates corresponding text labels for the model.\\\\
+A custom \texttt{DataCollator} is defined to handle batching and padding of input and label sequences, ensuring uniform sequence lengths for efficient computation. WER (Word Error Rate) is used as an evaluation metric, measuring the percentage of incorrectly predicted words through substitutions, deletions, and insertions relative to the total number of words in the reference transcription.\\\\
+The \texttt{facebook/wav2vec2-large-xlsr-53} model is loaded with specified parameters, and the feature extractor weights are frozen. A \texttt{Trainer} is instantiated with elevated evaluation steps to reduce training time. Training commences, followed by evaluation. Key parameters include:
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|l|}
+        \hline
+        \textbf{Parameter}                & \textbf{Value}       \\ \hline
+        Batch Size                        & 12                   \\ \hline
+        Num Epochs                        & 5                    \\ \hline
+        Training Files                    & 2217                 \\ \hline
+        Testing Files                     & 5212                 \\ \hline
+        Training Time (minutes)           & 19.67                \\ \hline
+        Total Parameters                  & 315,479,720          \\ \hline
+        Trainable Parameters              & 311,269,544          \\ \hline
+        WER (Word Error Rate)             & 1.0                  \\ \hline
+    \end{tabular}
+    \caption{Summary of Training Parameters}
+    \label{tab:training_summary}
+\end{table}
+
+
+Finally, the trained model, tokenizer, and feature extractor are saved on HuggingFace at \href{https://huggingface.co/AlirezaSaei/wav2vec2-large-xlsr-persian-fine-tuned}{AlirezaSaei/wav2vec2-large-xlsr-persian-fine-tuned}.
+
+\pagebreak
+
+\subsection{Results}
+
+During the training process, the predicted sentence lengths progressively decrease until the model predicts empty strings. However, the loss continues to decrease with each training step. This phenomenon is a known behavior in fine-tuning tasks.The typical stages of training can be summarized as follows (under the assumption that the ratio of trainable parameters to training data is appropriate):
+
+\begin{itemize}
+    \item \textbf{Beginning}: The model outputs random characters.
+    \item \textbf{Early Stages}: The model often outputs nothing, resulting in empty strings.
+    \item \textbf{After a While}: The model starts to produce more relevant characters and phrases.
+\end{itemize}
+
+In this particular task, the number of epochs (5) is insufficient to achieve optimal results. Moreover, there is an issue with the speech data filtering by length. The training data consists of samples between 4 and 6 seconds, while the test data includes samples up to 15 seconds. Consequently, the model is likely to perform better on test data that falls within the 4 to 6-second range. This discrepancy in data length filtering could lead to suboptimal model performance on longer test samples.
+
+To address these issues, it may be beneficial to:
+
+\begin{enumerate}
+    \item Increase the number of training epochs to allow the model more time to learn and generalize from the training data.
+    \item Ensure consistency in the length of training and test data to avoid performance discrepancies.
+    \item Consider augmenting the dataset with a more diverse range of audio lengths to improve the model's robustness and performance on varying test samples.
+\end{enumerate}
 
 
 \end{document}
