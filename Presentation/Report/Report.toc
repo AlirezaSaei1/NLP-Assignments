@@ -1,1 +1,29 @@
 \contentsline {section}{\numberline {1}Introduction}{3}{section.1}%
+\contentsline {section}{\numberline {2}LangChain Framework}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Models, Prompts, and Output Parsers}{3}{subsection.2.1}%
+\contentsline {subsubsection}{\numberline {2.1.1}Direct API Calls}{3}{subsubsection.2.1.1}%
+\contentsline {subsubsection}{\numberline {2.1.2}API Calls through LangChain}{4}{subsubsection.2.1.2}%
+\contentsline {subsection}{\numberline {2.2}Memory}{5}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Chains}{6}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Q\&A over Documents}{6}{subsection.2.4}%
+\contentsline {subsection}{\numberline {2.5}Evaluation}{7}{subsection.2.5}%
+\contentsline {subsection}{\numberline {2.6}Agents}{7}{subsection.2.6}%
+\contentsline {subsubsection}{\numberline {2.6.1}Built-in Tools}{7}{subsubsection.2.6.1}%
+\contentsline {subsubsection}{\numberline {2.6.2}Custom Tools}{7}{subsubsection.2.6.2}%
+\contentsline {section}{\numberline {3}Retrieval-Augmented Generation (RAG)}{8}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Overview}{8}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Document Loading}{8}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Document Splitting}{9}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Storage}{10}{subsection.3.4}%
+\contentsline {subsection}{\numberline {3.5}Retrieval}{10}{subsection.3.5}%
+\contentsline {subsection}{\numberline {3.6}Chat with Data}{10}{subsection.3.6}%
+\contentsline {section}{\numberline {4}Implementation}{11}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Import required libraries}{11}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Custom Model as Conversational Agent}{12}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Memory}{13}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}ConversationalRetrievalChain}{13}{subsection.4.4}%
+\contentsline {subsection}{\numberline {4.5}Create a chatbot that works on your documents}{14}{subsection.4.5}%
+\contentsline {subsection}{\numberline {4.6}Loading Database and Conversational Retrieval Chain}{14}{subsection.4.6}%
+\contentsline {subsection}{\numberline {4.7}Class and Dashboard Implementation}{15}{subsection.4.7}%
+\contentsline {subsection}{\numberline {4.8}Dashboard}{17}{subsection.4.8}%
+\contentsline {section}{\numberline {5}Explanation Video Link}{18}{section.5}%
