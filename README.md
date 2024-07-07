@@ -41,7 +41,8 @@ To get started with the assignments and the provided resources, follow these ste
 
 **Files:**
 - `Assignment1/Research/Research.pdf`: Summary of the paper.
-- `Assignment1/Codes/Preprocessing_Fa/Eng.py`: Preprocessing steps for English and Farsi.
+- `Assignment1/Codes/Preprocessing_Fa.py`: Preprocessing steps for Farsi.
+- `Assignment1/Codes/Preprocessing_Eng.py`: Preprocessing steps for English.
 - `Assignment1/Codes/SpellChecker.py`: Spell checker code.
 
 ### Assignment 2
@@ -52,7 +53,7 @@ To get started with the assignments and the provided resources, follow these ste
 
 **Files:**
 - `Assignment2/Codes/AutoFiller.py`: Autofill implementation using n-gram modeling.
-- `Assignment2/Codes/PSO_Tagging.py`: POS tagger code.
+- `Assignment2/Codes/POS_Tagging.py`: POS tagger code.
 
 ### Assignment 3
 
